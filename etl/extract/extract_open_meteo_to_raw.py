@@ -1,4 +1,4 @@
-
+import hashlib
 import json
 import logging
 import requests
@@ -33,10 +33,15 @@ def load_open_meteo(
 
     pg_hook = PostgresHook(postgres_conn_id=postgres_conn_id)
 
+    payload_str = json.dumps(payload, sort_keys=True)
+    payload_hash = hashlib.sha256(payload_str.encode()).hexdigest()
+
     insert_sql = """
             INSERT INTO raw.open_meteo_forecast
-            (latitude, longitude, payload)
-            VALUES (%s, %s, %s)
+            (latitude, longitude, payload, payload_hash)
+            VALUES (%s, %s, %s, %s)
+            ON CONFLICT (latitude, longitude, payload_hash) DO NOTHING;
+
         """
 
     pg_hook.run(
@@ -44,7 +49,8 @@ def load_open_meteo(
         parameters=(
             latitude,
             longitude,
-            json.dumps(payload),
+            payload_str,
+            payload_hash
         ),
     )
 

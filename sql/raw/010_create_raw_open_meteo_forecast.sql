@@ -1,12 +1,20 @@
 CREATE TABLE IF NOT EXISTS raw.open_meteo_forecast (
 
-    id           BIGSERIAL PRIMARY KEY,
+    id BIGSERIAL PRIMARY KEY,
 
-    latitude     NUMERIC (8,5) NOT NULL,
-    longitude    NUMERIC (8,5) NOT NULL,
+    latitude NUMERIC NOT NULL,
+    longitude NUMERIC NOT NULL,
 
-    payload      JSONB NOT NULL,
+    payload JSONB NOT NULL,
 
-    ingested_at TIMESTAMP WITHOUT TIME ZONE
-        DEFAULT CURRENT_TIMESTAMP
+    payload_hash TEXT NOT NULL,
+
+    ingested_at TIMESTAMPTZ DEFAULT NOW(),
+
+    dag_run_id TEXT
+
 );
+
+CREATE UNIQUE INDEX IF NOT EXISTS uq_open_meteo_payload_hash
+ON raw.open_meteo_forecast (latitude, longitude, payload_hash);
+
