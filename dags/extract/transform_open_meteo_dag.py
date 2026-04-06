@@ -24,7 +24,7 @@ raw_dataset = Dataset("postgres://postgres/airflow/raw/open_meteo_forecast")
     dag_id="open_meteo_transform",
     description="Transform RAW → STAGING → MART",
     default_args=DEFAULT_ARGS,
-    schedule=[raw_dataset],  # 🔥 dispara quando RAW atualiza
+    schedule=[raw_dataset],  # dispara qdo raw atualiza
     start_date=pendulum.datetime(2026, 1, 1, tz="UTC"),
     max_active_runs=1,
     catchup=False,
@@ -70,5 +70,6 @@ def open_meteo_transform():
     analytics = analytics_task()
 
     staging >> dq >> mart >> analytics
+
 
 dag_instance = open_meteo_transform()

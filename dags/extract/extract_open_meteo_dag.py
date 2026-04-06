@@ -60,5 +60,3 @@ def extract_open_meteo_dag():
 
 
 dag_instance = extract_open_meteo_dag()
-
-
