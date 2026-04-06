@@ -24,7 +24,8 @@ CITIES = [
 
 @dag(
     dag_id="extract_open_meteo_to_raw",
-    description="Extract hourly weather data from Open-Meteo API into raw JSONB layer",
+    description="Extract hourly weather data from Open-Meteo API into raw"
+                " JSONB layer",
     default_args=DEFAULT_ARGS,
     schedule="@hourly",
     start_date=pendulum.datetime(2026, 1, 1, tz="UTC"),
@@ -59,4 +60,5 @@ def extract_open_meteo_dag():
 
 
 dag_instance = extract_open_meteo_dag()
+
 

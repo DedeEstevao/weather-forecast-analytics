@@ -4,9 +4,11 @@ from datetime import timedelta
 import pendulum
 
 from etl.load.load_open_meteo_forecast_staging import load_staging
-from etl.quality.check_open_meteo_staging import check_staging_quality_incremental
+from etl.quality.check_open_meteo_staging import (
+    check_staging_quality_incremental)
 from etl.mart.load_open_meteo_forecast_mart import load_mart
-from etl.analytics.load_open_meteo_forecast_analytics import load_analytics
+from etl.analytics.load_open_meteo_forecast_analytics import (
+    load_analytics)
 
 
 DEFAULT_ARGS = {
@@ -67,9 +69,6 @@ def open_meteo_transform():
     mart = mart_task()
     analytics = analytics_task()
 
-
     staging >> dq >> mart >> analytics
-
-
 
 dag_instance = open_meteo_transform()
