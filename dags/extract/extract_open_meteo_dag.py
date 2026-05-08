@@ -4,8 +4,13 @@ from airflow import Dataset
 from datetime import timedelta
 import pendulum
 
+from airflow.providers.common.sql.operators.sql import (
+    SQLExecuteQueryOperator,
+)
+
 from etl.extract.extract_open_meteo_to_raw import extract_open_meteo
 from etl.extract.extract_open_meteo_to_raw import load_open_meteo
+
 
 DEFAULT_ARGS = {
     "owner": "data-engineering",
@@ -20,7 +25,7 @@ CITIES = [
     {"name": "Rio", "lat": -22.90, "lon": -43.20},
     {"name": "Curitiba", "lat": -25.43, "lon": -49.27},
 ]
-
+  
 
 @dag(
     dag_id="extract_open_meteo_to_raw",
@@ -31,9 +36,24 @@ CITIES = [
     start_date=pendulum.datetime(2026, 1, 1, tz="UTC"),
     max_active_runs=1,
     catchup=False,
+    template_searchpath=[
+        "/opt/airflow/dags",
+        "/opt/airflow/sql",
+    ],
+
     tags=["extract", "api", "raw", "open-meteo"],
 )
+
+    
+
 def extract_open_meteo_dag():
+    
+    ensure_raw_tables = SQLExecuteQueryOperator(
+        task_id="ensure_raw_tables",
+        conn_id="postgres_default",
+        sql="raw/010_create_raw_open_meteo_forecast.sql",
+    )
+    
 
     @task(outlets=[raw_dataset])
     def extract_and_load_task(city: dict):
@@ -56,7 +76,8 @@ def extract_open_meteo_dag():
             dag_run_id=run_id,
         )
 
-    extract_and_load_task.expand(city=CITIES)
+    extraction = extract_and_load_task.expand(city=CITIES)
 
+    ensure_raw_tables >> extraction
 
 dag_instance = extract_open_meteo_dag()

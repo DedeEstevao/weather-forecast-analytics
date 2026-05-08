@@ -1,3 +1,5 @@
+CREATE SCHEMA IF NOT EXISTS raw;
+
 CREATE TABLE IF NOT EXISTS raw.open_meteo_forecast (
 
     id BIGSERIAL PRIMARY KEY,
