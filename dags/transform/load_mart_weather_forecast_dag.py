@@ -27,7 +27,8 @@ DEFAULT_ARGS = {
     dag_id="load_weather_forecast_mart",
     description="Transform STAGING → MART",
     default_args=DEFAULT_ARGS,
-    schedule=[staging_forecast_dataset],  # dispara qdo staging atualiza
+    schedule=[staging_forecast_dataset], 
+      # triggers when staging is updated
     start_date=pendulum.datetime(2026, 1, 1, tz="UTC"),
     max_active_runs=1,
     catchup=False,

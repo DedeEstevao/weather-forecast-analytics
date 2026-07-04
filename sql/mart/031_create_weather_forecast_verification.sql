@@ -1,6 +1,6 @@
 CREATE SCHEMA IF NOT EXISTS mart;
 
-CREATE TABLE IF NOT EXISTS mart.weather_forecast_accuracy (
+CREATE TABLE IF NOT EXISTS mart.weather_forecast_verification (
     id BIGSERIAL PRIMARY KEY,
 
     city TEXT NOT NULL,
@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS mart.weather_forecast_accuracy (
 
     created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
 
-    CONSTRAINT uq_forecast_accuracy UNIQUE (
+    CONSTRAINT uq_forecast_verification UNIQUE (
         latitude,
         longitude,
         forecast_datetime,

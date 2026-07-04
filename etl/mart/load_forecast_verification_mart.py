@@ -5,7 +5,7 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
 
-def load_forecast_accuracy_mart(postgres_conn_id: str = "open_meteo"):
+def load_forecast_verification_mart(postgres_conn_id: str = "open_meteo"):
 
     logger.info("Starting MART load...")
 
@@ -51,7 +51,7 @@ def load_forecast_accuracy_mart(postgres_conn_id: str = "open_meteo"):
 
    inserted AS (
 
-      INSERT INTO mart.weather_forecast_accuracy (
+      INSERT INTO mart.weather_forecast_verification (
          city,
          latitude,
          longitude,

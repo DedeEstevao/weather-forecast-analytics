@@ -29,7 +29,7 @@ staging_observed_dataset = Dataset(
 # =====================================================
 
 mart_dataset = Dataset(
-    "postgres://postgres/airflow/mart/open_meteo_forecast"
+    "postgres://postgres/airflow/mart/weather_forecast"
 )
 
 # =====================================================

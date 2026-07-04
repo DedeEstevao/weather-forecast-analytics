@@ -79,4 +79,5 @@ with (DAG(
         >> create_staging_tables_observed 
         >> create_mart_tables
         >> create_mart_accuracy_tables
+        >> create_analytics_weather_daily_tables
     )

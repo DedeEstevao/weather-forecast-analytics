@@ -12,8 +12,9 @@ from etl.common.datasets import (
     staging_observed_dataset, 
 )
 
-from etl.mart.load_forecast_accuracy_mart import (
-    load_forecast_accuracy_mart,
+from etl.mart import load_forecast_verification_mart
+from etl.mart.load_forecast_verification_mart import (
+    load_forecast_verification_mart,
 )
 
 DEFAULT_ARGS = {
@@ -25,12 +26,12 @@ DEFAULT_ARGS = {
 
 
 @dag(
-    dag_id="load_forecast_accuracy_mart_dag",
+    dag_id="load_forecast_verification_mart_dag",
     description="Transform STAGING → MART",
     default_args=DEFAULT_ARGS,
     schedule=[staging_observed_dataset, 
               staging_forecast_dataset],
-              # dispara qdo staging observed e forecast atualiza
+              # triggers when either of the datasets is updated
     start_date=pendulum.datetime(2026, 1, 1, tz="UTC"),
     max_active_runs=1,
     catchup=False,
@@ -42,23 +43,23 @@ DEFAULT_ARGS = {
 )
 
 
-def forecast_accuracy_mart():
+def forecast_verification_mart():
 
     ensure_mart_tables = SQLExecuteQueryOperator(
         task_id="ensure_mart_tables",
         conn_id="open_meteo",
-        sql="mart/031_create_weather_forecast_accuracy.sql",
+        sql="mart/031_create_weather_forecast_verification.sql",
     )
 
     @task
-    def accuracy_mart_task():
-        return load_forecast_accuracy_mart(postgres_conn_id="open_meteo")
+    def verification_mart_task():
+        return load_forecast_verification_mart(postgres_conn_id="open_meteo")
 
 
-    mart = accuracy_mart_task()
+    mart = verification_mart_task()
 
     
 
     ensure_mart_tables >> mart
 
-dag_instance = forecast_accuracy_mart()
+dag_instance = forecast_verification_mart()
