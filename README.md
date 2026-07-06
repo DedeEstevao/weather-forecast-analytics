@@ -80,10 +80,10 @@ The RAW layer stores the original responses retrieved from the Open-Meteo API wi
 
 It preserves the complete JSON payload together with ingestion metadata, providing:
 
-Complete data lineage
-Historical traceability
-Payload deduplication using hashes
-Reliable reprocessing capabilities
+- Complete data lineage
+- Historical traceability
+- Payload deduplication using hashes
+- Reliable reprocessing capabilities
 
 **Tables**  
 
