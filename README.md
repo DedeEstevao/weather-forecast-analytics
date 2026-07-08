@@ -41,12 +41,17 @@ The solution follows a modern end-to-end data engineering architecture, orchestr
 ---
 # Project Structure
 
-<p align="left">
-  <img src="docs/images/tree.png" alt="Project Structure" 
-width="400">
-</p>
-
-
+```text
+weather-forecast-analytics
+├── dags/                 # Airflow DAGs
+├── etl/                  # ETL modules
+├── sql/                  # Database scripts
+├── docker/               # Docker environment
+├── docs/
+│   └── images/
+├── README.md
+└── requirements.txt
+```
 
 ---
 # Pipeline Airflow
@@ -266,15 +271,21 @@ This project demonstrates practical experience with:
 
 ### Instalation
 
-1. Clone the repository.
-2. Navigate to the `docker` directory.
+1. Clone the repository:
+    ```bash
+    git clone https://github.com/DedeEstevao/weather-forecast-analytics.git
+    ```
+2. Navigate to the `docker` directory:
+    ```bash
+    cd weather-forecast-analytics/docker
+    ```
 3. Start PostgreSQL and initialize Airflow:
    ```bash
-   docker compose --profile init up airflow-init
+   docker-compose --profile init up airflow-init
    ```
 4. Start all services:
    ```bash
-   docker compose up -d
+   docker-compose up -d
    ```
 5. Available Services:
 
@@ -286,6 +297,13 @@ This project demonstrates practical experience with:
     |   **Apache Superset** | http://localhost:8088 | Weather analytics and forecast verification   dashboards |
     |   **PostgreSQL** | localhost:5432 | Layered analytical data warehouse |
 
+6. Login credentials
+
+    | Service | Username | Password |
+    |---------|----------|----------|
+    | Airflow | admin | admin |
+    | Superset | admin | admin |
+  **Note:** These credentials are intended exclusively for local development and demonstration purposes.
 
 ---
 # Author

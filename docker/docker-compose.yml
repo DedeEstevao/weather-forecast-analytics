@@ -2,7 +2,7 @@
 x-airflow-common-env: &airflow-common-env
   AIRFLOW__CORE__EXECUTOR: LocalExecutor
   AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
-  AIRFLOW__WEBSERVER__SECRET_KEY: "airflow-super-secret-key-123"
+  AIRFLOW__WEBSERVER__SECRET_KEY: "development-secret-key"
   AIRFLOW_CONN_POSTGRES_DEFAULT: postgresql://airflow:airflow@postgres:5432/airflow
   AIRFLOW_CONN_OPEN_METEO: postgresql://airflow:airflow@postgres:5432/open_meteo
 services:
