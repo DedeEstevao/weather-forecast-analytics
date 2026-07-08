@@ -7,14 +7,13 @@ ARG PYTHON_VERSION=3.10
 FROM apache/airflow:${AIRFLOW_VERSION}-python${PYTHON_VERSION}
 
 
-# Copia requirements
+# Copia project dependecies
 COPY requirements.txt /requirements.txt
 
-
-# Instala dependências
+# Install Python dependencies using the official Airflow constraints
 RUN pip install --no-cache-dir \
-    -r /requirements.txt \
-    --constraint "https://raw.githubusercontent.com/apache/airflow/constraints-2.9.0/constraints-3.10.txt"
+    --constraint "https://raw.githubusercontent.com/apache/airflow/constraints-${AIRFLOW_VERSION}/constraints-${PYTHON_VERSION}.txt" \
+    -r /requirements.txt
 
 # PYTHONPATH para importar etl/, sql/, etc
 ENV PYTHONPATH=/opt/airflow
