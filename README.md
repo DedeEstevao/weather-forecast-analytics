@@ -275,19 +275,15 @@ This project demonstrates practical experience with:
     ```bash
     git clone https://github.com/DedeEstevao/weather-forecast-analytics.git
     ```
-2. Navigate to the `docker` directory:
+2. Navigate to the project directory:
     ```bash
-    cd weather-forecast-analytics/docker
+    cd weather-forecast-analytics
     ```
-3. Start PostgreSQL and initialize Airflow:
-   ```bash
-   docker-compose --profile init up airflow-init
-   ```
-4. Start all services:
-   ```bash
-   docker-compose up -d
-   ```
-5. Available Services:
+3. Initialize the environment:
+    ```bash
+    ./scripts/setup.sh
+    ```
+4. Available Services:
 
     After the containers are running, the following services are available:
 
@@ -297,7 +293,7 @@ This project demonstrates practical experience with:
     |   **Apache Superset** | http://localhost:8088 | Weather analytics and forecast verification   dashboards |
     |   **PostgreSQL** | localhost:5432 | Layered analytical data warehouse |
 
-6. Login credentials
+5. Login credentials
 
     | Service | Username | Password |
     |---------|----------|----------|

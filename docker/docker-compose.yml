@@ -1,3 +1,4 @@
+name: weather-forecast-analytics
 
 x-airflow-common-env: &airflow-common-env
   AIRFLOW__CORE__EXECUTOR: LocalExecutor
