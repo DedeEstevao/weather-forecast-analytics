@@ -9,7 +9,7 @@ set -e
 # ==========================================================
 
 PROJECT_NAME="Weather Forecast Analytics"
-PROJECT_SLUG="weather-forecast-analytics"
+PROJECT_SLUG="weather-forecast-test"
 echo
 echo "======================================================"
 echo "   ${PROJECT_NAME}"
