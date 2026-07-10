@@ -16,7 +16,6 @@ echo "   ${PROJECT_NAME}"
 echo "   Initializing development environment"
 echo "======================================================"
 echo
-
 #############################################
 # Check Docker
 #############################################
@@ -57,7 +56,8 @@ fi
 echo "Using Docker Compose:"
 
 $COMPOSE version
-
+echo
+echo "Docker project name: $PROJECT_SLUG"
 echo
 
 #############################################
@@ -133,13 +133,13 @@ echo "======================================================"
 echo
 echo "Open your browser:"
 echo
-echo "Services:"
-echo "---------"
+echo "Services"
+echo "--------"
 echo "Airflow  : http://localhost:8080"
 echo "Superset : http://localhost:8088"
 echo
-echo "Default credentials:"
-echo "--------------------"
+echo "Default credentials"
+echo "-------------------"
 echo "Username : admin"
 echo "Password : admin"
 echo
