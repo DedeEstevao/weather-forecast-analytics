@@ -2,13 +2,14 @@
 
 set -e
 
-#############################################
+# ==========================================================
 # Weather Forecast Analytics
-# Project Setup Script
-#############################################
+# Bootstrap script for local development environment.
+# Compatible with Docker Compose V1 and V2.
+# ==========================================================
 
 PROJECT_NAME="Weather Forecast Analytics"
-
+PROJECT_SLUG="weather-forecast-analytics"
 echo
 echo "======================================================"
 echo "   ${PROJECT_NAME}"
@@ -22,6 +23,11 @@ echo
 
 echo "Checking Docker..."
 
+if [ ! -d "docker" ]; then
+    echo "ERROR: Please run this script from the project root directory."
+    exit 1
+fi
+
 if ! docker info >/dev/null 2>&1; then
     echo
     echo "ERROR: Docker is not running."
@@ -30,23 +36,34 @@ if ! docker info >/dev/null 2>&1; then
 fi
 
 echo "Docker is running."
+
 echo
 
 #############################################
-# Check Docker Compose
+# Detect Docker Compose
 #############################################
 
-if ! docker compose version >/dev/null 2>&1; then
+echo "Checking Docker Compose..."
+
+if command -v docker-compose >/dev/null 2>&1; then
+    COMPOSE="docker-compose"
+elif docker compose version >/dev/null 2>&1; then
+    COMPOSE="docker compose"
+else
     echo "ERROR: Docker Compose is not installed."
     exit 1
 fi
 
-echo "Docker Compose found."
+echo "Using Docker Compose:"
+
+$COMPOSE version
+
 echo
 
 #############################################
 # Move to docker directory
 #############################################
+echo "Changing to docker directory..."
 
 cd docker
 
@@ -54,20 +71,25 @@ cd docker
 # Initialize Airflow database
 #############################################
 
-echo "Initializing Airflow metadata database..."
+echo "Initializing Airflow metadata database (first run only)..."
 
-docker compose --profile init up airflow-init
+$COMPOSE -p "$PROJECT_SLUG" --profile init up airflow-init
+
+echo "Airflow metadata database initialized."
+
+echo "Waiting for PostgreSQL..."
+
+sleep 5
 
 echo
-
 #############################################
 # Create Airflow admin user
 #############################################
 
 echo "Checking Airflow administrator user..."
 
-if docker compose run --rm airflow-webserver \
-    airflow users list | grep -q "^admin\b"; then
+USERS=$($COMPOSE -p "$PROJECT_SLUG" run --rm airflow-webserver airflow users list 2>/dev/null || true)
+if echo "$USERS" | grep -qw "admin"; then
 
     echo "✓ Administrator user already exists."
 
@@ -75,7 +97,7 @@ else
 
     echo "Creating administrator user..."
 
-    docker compose run --rm airflow-webserver \
+    $COMPOSE -p "$PROJECT_SLUG" run --rm airflow-webserver \
         airflow users create \
             --username admin \
             --password admin \
@@ -85,21 +107,19 @@ else
             --email admin@example.com
 
     echo "✓ Administrator user created."
-    
+
+fi
+
 #############################################
 # Start services
 #############################################
 
 echo "Starting services..."
 
-docker compose up -d
+$COMPOSE -p "$PROJECT_SLUG" up -d
 
 echo
-
-#############################################
-# Wait a little
-#############################################
-
+echo "Waiting for services to start..."
 sleep 10
 
 #############################################
@@ -111,14 +131,18 @@ echo "======================================================"
 echo "Environment successfully initialized!"
 echo "======================================================"
 echo
-echo "Services"
-echo "--------"
+echo "Open your browser:"
+echo
+echo "Services:"
+echo "---------"
 echo "Airflow  : http://localhost:8080"
 echo "Superset : http://localhost:8088"
 echo
-echo "Credentials"
-echo "-----------"
+echo "Default credentials:"
+echo "--------------------"
 echo "Username : admin"
 echo "Password : admin"
 echo
-echo "Enjoy!"
+echo
+echo "Setup completed successfully."
+echo "You can now access Airflow and Superset using the URLs above."
