@@ -77,7 +77,7 @@ $COMPOSE -p "$PROJECT_SLUG" --profile init up airflow-init
 
 echo "Airflow metadata database initialized."
 
-echo "Waiting for PostgreSQL..."
+echo "Waiting for Services..."
 
 sleep 5
 
@@ -109,6 +109,67 @@ else
     echo "✓ Administrator user created."
 
 fi
+
+echo
+#############################################
+# Create Superset admin user
+#############################################
+
+echo "Initializing Superset metadata..."
+
+MAX_RETRIES=10
+COUNT=0
+
+until $COMPOSE -p "$PROJECT_SLUG" run --rm \
+    superset superset db upgrade;
+do
+    COUNT=$((COUNT+1))
+
+    if [ "$COUNT" -ge "$MAX_RETRIES" ]; then
+        echo "ERROR: Superset database initialization failed."
+        exit 1
+    fi
+
+    echo "Waiting for Superset database... ($COUNT/$MAX_RETRIES)"
+    sleep 5
+done
+
+echo "Superset database initialized."
+
+echo "Checking Superset administrator user..."
+
+ADMIN_EXISTS=$(
+$COMPOSE -p "$PROJECT_SLUG" run --rm superset \
+python -c "
+from superset import app
+from flask_appbuilder.security.sqla.models import User
+with app.app_context():
+    print(User.query.filter_by(username='admin').count())
+" 2>/dev/null || echo 0
+)
+
+if [ "$ADMIN_EXISTS" -gt 0 ]; then
+
+    echo "✓ Superset administrator already exists."
+
+else
+    echo "Creating Superset administrator..."
+
+    $COMPOSE -p "$PROJECT_SLUG" run --rm superset \
+        superset fab create-admin \
+            --username admin \
+            --firstname Admin \
+            --lastname User \
+            --email admin@example.com \
+            --password admin
+
+    echo "✓ Superset administrator created."
+fi
+
+$COMPOSE -p "$PROJECT_SLUG" run --rm superset \
+    superset init
+
+echo "Superset metadata initialized."
 
 #############################################
 # Start services
