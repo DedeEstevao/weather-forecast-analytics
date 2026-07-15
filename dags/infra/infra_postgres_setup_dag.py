@@ -59,10 +59,10 @@ with (DAG(
         sql="mart/030_create_mart_weather_forecast.sql",
     )
 
-    create_mart_accuracy_tables = SQLExecuteQueryOperator(
-        task_id="create_mart_accuracy_tables",
+    create_mart_verification_tables = SQLExecuteQueryOperator(
+        task_id="create_mart_verification_tables",
         conn_id="open_meteo",
-        sql="mart/031_create_weather_forecast_accuracy.sql",
+        sql="mart/031_create_weather_forecast_verification.sql",
     )
 
     create_analytics_weather_daily_tables = SQLExecuteQueryOperator(
@@ -78,6 +78,6 @@ with (DAG(
         >> create_staging_tables_forecast 
         >> create_staging_tables_observed 
         >> create_mart_tables
-        >> create_mart_accuracy_tables
+        >> create_mart_verification_tables
         >> create_analytics_weather_daily_tables
     )
