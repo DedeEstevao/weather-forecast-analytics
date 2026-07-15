@@ -299,7 +299,15 @@ This project demonstrates practical experience with:
     |---------|----------|----------|
     | Airflow | admin | admin |
     | Superset | admin | admin |
-  **Note:** These credentials are intended exclusively for local development and demonstration purposes.
+    **Note:** These credentials are intended exclusively for local development and demonstration purposes.
+
+    **Importing Superset Dashboards**
+
+    1. Start the project.
+    2. Open Superset (http://localhost:8088).
+    3. Log in as `admin`.
+    4. Go to **Settings → Import/Export** (or the corresponding menu in your version).
+    5. Import the files from the `dashboards/` directory.
 
 ---
 # Author
