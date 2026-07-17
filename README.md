@@ -145,7 +145,7 @@ Design Note: The separation between RAW, STAGING, MART, and ANALYTICS follows mo
 
 <p align="center">
   <img src="docs/images/Data Warehouse Weather.drawio.svg" alt="Weather Forecast Analytics 
-Architecture" width="700">
+Architecture" width="900">
 </p>
 
 ---
@@ -182,7 +182,7 @@ Built on the **analytics.weather_daily** dataset, this dashboard provides an ove
 
 <p align="center">
   <img src="docs/images/forecast-overview.jpg" alt="Weather Forecast Analytics 
-Architecture" width="700">
+Architecture" width="900">
 </p>
 
 ## Forecast Model Performance Analysis
@@ -241,7 +241,7 @@ differences in forecast performance.
 
 <p align="center">
   <img src="docs/images/model-performance-analysis.jpg" alt="Weather Forecast Analytics 
-Architecture" width="700">
+Architecture" width="900">
 </p>
 
 ---
