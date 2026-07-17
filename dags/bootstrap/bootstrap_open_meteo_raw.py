@@ -1,17 +1,17 @@
-from airflow import DAG
-from airflow.providers.common.sql.operators.sql import SQLExecuteQueryOperator
 from datetime import datetime
-from airflow.operators.python import ShortCircuitOperator
-        
-from etl.bootstrap.bootstrap import bootstrap_needed
 
+from airflow import DAG
+from airflow.operators.python import ShortCircuitOperator
+from airflow.providers.common.sql.operators.sql import SQLExecuteQueryOperator
+
+from etl.bootstrap.bootstrap import bootstrap_needed
 from etl.common.datasets import (
     raw_forecast_dataset,
     raw_observed_dataset,
 )
 
 with DAG(
-    dag_id="bootstrap_open_meteo",
+    dag_id="bootstrap_open_meteo_raw",
     start_date=datetime(2026, 1, 1),
     schedule=None,
     catchup=False,
