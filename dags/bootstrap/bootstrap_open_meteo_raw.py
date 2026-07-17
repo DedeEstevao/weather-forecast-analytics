@@ -15,7 +15,7 @@ with DAG(
     start_date=datetime(2026, 1, 1),
     schedule=None,
     catchup=False,
-    template_searchpath=["/opt/airflow/bootstrap-data"],
+    template_searchpath=["/opt/airflow/sql"],
 ) as dag:
 
     check_bootstrap = ShortCircuitOperator(
@@ -26,14 +26,14 @@ with DAG(
     load_forecast = SQLExecuteQueryOperator(
         task_id="load_raw_forecast",
         conn_id="open_meteo",
-        sql="raw_forecast.sql",
+        sql="bootstrap-data/raw_forecast.sql",
         outlets=[raw_forecast_dataset],
     )
 
     load_observed = SQLExecuteQueryOperator(
         task_id="load_raw_observed",
         conn_id="open_meteo",
-        sql="raw_observed.sql",
+        sql="bootstrap-data/raw_observed.sql",
         outlets=[raw_observed_dataset],
     )
 
