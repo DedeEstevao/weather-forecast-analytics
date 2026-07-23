@@ -317,10 +317,15 @@ This project demonstrates practical experience with:
       - Open Superset (http://localhost:8088).
 
       - Log in as `admin`.
-
+      
   5. Importing Superset Dashboards
 
-     Import the dashboard files from the `dashboards/` directory using **Dashboards → Import Dashboards**.
+     Import the dashboard files from the `dashboards/` directory using **Dashboards → Import (⬇)** button highlighted below.
+
+     
+      ![Dashboards](docs/images/import_dashboards.png)
+      
+     Dashboards:
 
       * `weather_forecast.zip`
 
