@@ -318,11 +318,23 @@ This project demonstrates practical experience with:
 
       - Log in as `admin`.
 
-  5. Importing Superset Dashboards:
+  5. Importing Superset Dashboards
 
-      - Go to **Settings → Import/Export** (or the corresponding menu in your version).
+     Import the dashboard files from the `dashboards/` directory using **Dashboards → Import Dashboards**.
 
-      - Import the files from the `dashboards/` directory.
+      * `weather_forecast.zip`
+
+      * `weather_verification.zip`
+
+      > **Note**
+      >
+      > During the import, Superset may prompt for the PostgreSQL datasource password. Use:
+      >
+      > ```text
+      > airflow
+      > ```
+      >
+      > After the import is complete, the dashboards should automatically connect to the existing datasource created by the bootstrap process.
 
 ---
 # Author
