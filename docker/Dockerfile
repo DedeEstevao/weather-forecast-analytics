@@ -16,5 +16,10 @@ RUN pip install --no-cache-dir \
     --constraint "https://raw.githubusercontent.com/apache/airflow/constraints-${AIRFLOW_VERSION}/constraints-3.10.txt" \
     -r /requirements.txt
 
+COPY dags /opt/airflow/dags
+COPY etl /opt/airflow/etl
+COPY sql /opt/airflow/sql
+
 # PYTHONPATH para importar etl/, sql/, etc
 ENV PYTHONPATH=/opt/airflow
+
