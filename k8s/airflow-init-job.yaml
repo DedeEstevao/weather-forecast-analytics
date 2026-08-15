@@ -1,0 +1,37 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: airflow-init
+  namespace: weather-analytics
+spec:
+  backoffLimit: 4
+  template:
+    spec:
+      restartPolicy: OnFailure
+      containers:
+        - name: airflow-init
+          image: weather-airflow:2.9.0
+          imagePullPolicy: Never
+
+          env:
+            - name: AIRFLOW__CORE__EXECUTOR
+              value: LocalExecutor
+
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRES_PASSWORD
+
+            - name: AIRFLOW__WEBSERVER__SECRET_KEY
+              value: development-secret-key
+
+          command:
+            - /bin/bash
+            - -c
+
+          args:
+            - |
+              export AIRFLOW__DATABASE__SQL_ALCHEMY_CONN="postgresql+psycopg2://airflow:${POSTGRES_PASSWORD}@postgres:5432/airflow"
+              exec airflow db migrate
+
