@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: airflow-scheduler
+  namespace: weather-analytics
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: airflow-scheduler
+
+  template:
+    metadata:
+      labels:
+        app: airflow-scheduler
+
+    spec:
+      containers:
+        - name: airflow-scheduler
+          image: weather-airflow:2.9.0
+          imagePullPolicy: Never
+
+          env:
+            - name: AIRFLOW__CORE__EXECUTOR
+              value: LocalExecutor
+
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRES_PASSWORD
+
+            - name: AIRFLOW__WEBSERVER__SECRET_KEY
+              value: development-secret-key
+
+            - name: PYTHONPATH
+              value: /opt/airflow
+
+          command:
+            - /bin/bash
+            - -c
+
+          args:
+            - |
+              export AIRFLOW__DATABASE__SQL_ALCHEMY_CONN="postgresql+psycopg2://airflow:${POSTGRES_PASSWORD}@postgres:5432/airflow"
+              exec airflow scheduler
+
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "768Mi"
+
