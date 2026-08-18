@@ -71,7 +71,6 @@ services:
       - ../dags:/opt/airflow/dags
       - ../etl:/opt/airflow/etl
       - ../sql:/opt/airflow/sql
-      - ../models:/opt/airflow/models
 
     environment:
       <<: *airflow-common-env
@@ -91,7 +90,6 @@ services:
       - ../dags:/opt/airflow/dags
       - ../etl:/opt/airflow/etl
       - ../sql:/opt/airflow/sql
-      - ../models:/opt/airflow/models
 
     environment:
       <<: *airflow-common-env
